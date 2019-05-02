@@ -10,37 +10,29 @@ const IssueSchema = new Schema ({
   text: {
     type: String,
     required: true
+  },
+  created_by: {
+    type: String,
+    required: true
+  },
+  assigned_to: {
+    type: String
+  },
+  status_text: {
+    type: String
+  },
+  created_on: {
+    type: Date,
+    default: Date.now
+  },
+  updated_on: {
+    type: Date,
+    default: Date.now
+  },
+  open: {
+    type: Boolean,
+    default: true
   }
-  // creation: [
-  //   {
-  //     created_by: {
-  //       type: String,
-  //       required: true
-  //     },
-  //     assig_to: {
-  //       type: String
-  //     },
-  //     created_on: {
-  //       type: Date,
-  //       default: Date.now
-  //     }
-  //   }
-  // ],
-  // status: [
-  //   {
-  //     text: {
-  //       type: String
-  //     },
-  //     open: {    
-  //       type: Boolean,
-  //       default: true
-  //     },
-  //     update: {
-  //       type: Date,
-  //       default: Date.now
-  //     }
-  //   }
-  // ]
 });
 
 module.exports = Issue = mongoose.model('issue', IssueSchema);
