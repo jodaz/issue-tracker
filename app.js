@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const testRunner = require('./test-runner');
 
+// Enviroment vars
+require('dotenv').config();
+
 const issues = require('./routes/api/issues');
 
 const app = express();
