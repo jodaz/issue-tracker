@@ -3,16 +3,26 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
-const app = express();
-const db = require('./config/keys').mongoURI;
 const testRunner = require('./test-runner');
 
+const issues = require('./routes/api/issues');
+
+const app = express();
+
+// Body parser and helmet middleware
 app.use(helmet());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+const db = require('./config/keys').mongoURI;
+
 mongoose
   .connect(db, { useNewUrlParser: true })
   .then(() => { console.log('MongoDB connected') })
   .catch((error) => { console.log(error) });
+
+// Routing
+app.use('/api/issues', issues);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
