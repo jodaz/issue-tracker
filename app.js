@@ -8,6 +8,7 @@ const app = express();
 const db = require('./config/keys').mongoURI;
 const testRunner = require('./test-runner');
 
+app.use(helmet());
 mongoose
   .connect(db, { useNewUrlParser: true })
   .then(() => { console.log('MongoDB connected') })
