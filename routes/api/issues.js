@@ -8,8 +8,11 @@ const Issue = require('../../models/Issue');
 router.post('/', (req, res) => {
 
   const newIssue = new Issue({
-    title: req.body.title,
-    text: req.body.text
+    title: req.body.issue_title,
+    text: req.body.issue_text,
+    created_by: req.body.created_by,
+    assigned_to: req.body.assigned_to,
+    status_text: req.body.status_text
   });
 
   newIssue.save().then(issue => res.json(issue));
