@@ -16,10 +16,12 @@ const IssueSchema = new Schema ({
     required: true
   },
   assigned_to: {
-    type: String
+    type: String,
+    default: ""
   },
   status_text: {
-    type: String
+    type: String,
+    default: ""
   },
   created_on: {
     type: Date,
