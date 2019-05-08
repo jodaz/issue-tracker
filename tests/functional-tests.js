@@ -76,21 +76,59 @@ suite('Functional Tests', () => {
       
     });
     
-    // suite('PUT /api/issues/{project} => text', () => {
+    suite('PUT /api/issues/{project} => text', () => {
       
-    //   test('No body', (done) => {
-        
-    //   });
+      test('No body', (done) => {
+        let obj = {
+          _id: '5cd2f573a19fad1060d76115'
+        };
+
+        chai.request(server)
+          .put('/api/issues/test')
+          .send(obj)
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.deepEqual(res.body, {'error': 'no updated field sent'});
+            done();
+          }); 
+      });
       
-    //   test('One field to update', (done) => {
-        
-    //   });
+      test('One field to update', (done) => {
+        let obj = {
+          _id: '5cd339bc2a73170a2ca605e5',
+          'title': 'New title 1'
+        };
+
+        chai.request(server)
+          .put('/api/issues/test')
+          .send(obj)
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.equal(res.body.title, obj.title);
+            done();
+          }); 
+      });
       
-    //   test('Multiple fields to update', (done) => {
-        
-    //   });
+      test('Multiple fields to update', (done) => {
+        let obj = {
+          _id: '5cd33a185f8d1c10fcc01017',
+          'title': 'New title 2',
+          'open': false 
+        };
+
+        chai.request(server)
+          .put('/api/issues/test')
+          .send(obj)
+          .set(obj)
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.equal(res.body.title, obj.title);
+            assert.equal(res.body.open, obj.open);
+            done();
+          }); 
+      });
       
-    // });
+    });
     
     // suite('GET /api/issues/{project} => Array of objects with issue data', () => {
       
