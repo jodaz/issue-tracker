@@ -21,14 +21,13 @@ router.post('/', (req, res) => {
 });
 
 router.put('/', (req, res) => {
-  let issueFields = {
-    id: req.body._id
+
+  if (Object.keys(req.body).length == 0) {
+    res.status(400).json({'error': 'no updated field sent'});
+    return;
   }
 
-  if (Array(req.body).length == 1) {
-    res.json({'error': 'no updated field sent'});
-    res.send();
-  }
+  let issueFields = {};
 
   if (req.body.title) issueFields.title = req.body.title;
   if (req.body.text) issueFields.text = req.body.text;
@@ -37,21 +36,13 @@ router.put('/', (req, res) => {
   if (req.body.status_text) issueFields.status_text = req.body.status_text;
   if (typeof(req.body.open) == typeof(Boolean())) issueFields.open = req.body.open;
 
-  Issue.findOne({_id: issueFields.id}).then(issue => {
-    
-    if (issue) {
-
-      // res.json({'error': 'no updated field sent'});
-      // res.json({})
-    } else {
-      res.json({'error': `could not update ${issueFields._id}`});
-    }
-  }).catch(err => {
-    console.log(`${err}`);
-  });
-
-  // console.log(issueFields);
-  // res.json({});
+  Issue.findOneAndUpdate(
+    { _id: req.body._id },
+    { $set: issueFields },
+    { new: true })
+  .then(newIssue => 
+    res.json({'sucess': newIssue}))
+  .catch(err => console.log(`${err}`));
 });
 
 module.exports = router;

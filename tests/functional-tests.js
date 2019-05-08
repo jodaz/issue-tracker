@@ -79,15 +79,13 @@ suite('Functional Tests', () => {
     suite('PUT /api/issues/{project} => text', () => {
       
       test('No body', (done) => {
-        let obj = {
-          _id: '5cd2f573a19fad1060d76115'
-        };
+        let obj = {};
 
         chai.request(server)
           .put('/api/issues/test')
           .send(obj)
           .end((err, res) => {
-            assert.equal(res.status, 200);
+            assert.equal(res.status, 400);
             assert.deepEqual(res.body, {'error': 'no updated field sent'});
             done();
           }); 
@@ -96,7 +94,7 @@ suite('Functional Tests', () => {
       test('One field to update', (done) => {
         let obj = {
           _id: '5cd339bc2a73170a2ca605e5',
-          'title': 'New title 1'
+          'title': 'Sorry!'
         };
 
         chai.request(server)
@@ -104,7 +102,7 @@ suite('Functional Tests', () => {
           .send(obj)
           .end((err, res) => {
             assert.equal(res.status, 200);
-            assert.equal(res.body.title, obj.title);
+            assert.equal(res.body.sucess.title, obj.title);
             done();
           }); 
       });
@@ -112,9 +110,11 @@ suite('Functional Tests', () => {
       test('Multiple fields to update', (done) => {
         let obj = {
           _id: '5cd33a185f8d1c10fcc01017',
-          'title': 'New title 2',
-          'open': false,
-          'text': 'Lorem ipsum'
+          title: 'Opa Dopa Upa!',
+          open: false,
+          text: 'More Lorem ipsum',
+          created_by: 'Jesus Ordosgoitty',
+          assigned_to: 'Lady Gaga'
         };
 
         chai.request(server)
@@ -122,12 +122,27 @@ suite('Functional Tests', () => {
           .send(obj)
           .end((err, res) => {
             assert.equal(res.status, 200);
-            assert.equal(res.body.title, obj.title);
-            assert.equal(res.body.open, obj.open);
-            assert.equal(res.body.text, obj.text);
+            assert.equal(res.body.sucess.title, obj.title);
+            assert.equal(res.body.sucess.open, obj.open);
+            assert.equal(res.body.sucess.text, obj.text);
             done();
           }); 
       });
+
+      test('Unsuccessful update', (done) => {
+        let obj = {
+          _id: '1241kfajkngjkagnjkagn'
+        };
+
+        chai.request(server)
+          .put('/api/issues/test')
+          .send(obj)
+          .end((err, res) => {
+            assert.equal(res.status, 400);
+            assert.equal(res.body, {'error': `could not update ${obj._id}`});
+            done();
+          }); 
+      })
       
     });
     
