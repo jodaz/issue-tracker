@@ -139,7 +139,7 @@ suite('Functional Tests', () => {
           .send(obj)
           .end((err, res) => {
             assert.equal(res.status, 400);
-            assert.equal(res.body, {'error': `could not update ${obj._id}`});
+            assert.deepEqual(res.body, {'error': `could not update ${obj._id}`});
             done();
           }); 
       })

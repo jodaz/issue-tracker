@@ -42,7 +42,10 @@ router.put('/', (req, res) => {
     { new: true })
   .then(newIssue => 
     res.json({'sucess': newIssue}))
-  .catch(err => console.log(`${err}`));
+  .catch(err => {
+    console.log(`${err}`); 
+    res.status(400).json({'error': `could not update ${req.body._id}`});
+  });
 });
 
 module.exports = router;
