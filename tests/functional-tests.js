@@ -10,30 +10,68 @@ suite('Functional Tests', () => {
     suite('POST /api/issues/{project} => object with issue data', () => {
       
       test('Every field filled in', (done) => {
+
+        let obj = {
+          issue_title: 'Title',
+          issue_text: 'text',
+          created_by: 'Functional Test - Every field filled in',
+          assigned_to: 'Chai and Mocha',
+          status_text: 'In QA'
+        };
+
         chai.request(server)
           .post('/api/issues/test')
-          .send({
-            issue_title: 'Title',
-            issue_text: 'text',
-            created_by: 'Functional Test - Every field filled in',
-            assigned_to: 'Chai and Mocha',
-            status_text: 'In QA'
-          })
+          .send(obj)
           .end((err, res) => {
             assert.equal(res.status, 200);
-            
-            //fill me in too!
-            
+            assert.equal(res.body.title, obj.issue_title);
+            assert.equal(res.body.text, obj.issue_text);
+            assert.equal(res.body.created_by, obj.created_by);
+            assert.equal(res.body.assigned_to, obj.assigned_to);
+            assert.equal(res.body.status_text, obj.status_text);
+            assert.isTrue(res.body.open);
+            assert.exists(res.body.created_on);
+            assert.exists(res.body.updated_on);
+            assert.exists(res.body._id);
+            done();
+          })
+      });
+      
+      test('Required fields filled in', (done) => {
+
+        let obj = {
+          issue_title: 'Title',
+          issue_text: 'text',
+          created_by: 'Jesus'
+        };
+
+        chai.request(server)
+          .post('/api/issues/test')
+          .send(obj)
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.equal(res.body.title, obj.issue_title);
+            assert.equal(res.body.text, obj.issue_text);
+            assert.equal(res.body.created_by, obj.created_by);
+            assert.equal(res.body.assigned_to, "");
+            assert.equal(res.body.status_text, "");
+            assert.isTrue(res.body.open);
+            assert.exists(res.body.created_on);
+            assert.exists(res.body.updated_on);
+            assert.exists(res.body._id);
             done();
           });
       });
       
-      test('Required fields filled in', (done) => {
-        done();
-      });
-      
       test('Missing required fields', (done) => {
-        done();
+        chai.request(server)
+          .post('/api/issues/test')
+          .send({})
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.deepEqual(res.body, {'error': 'Missing required fields'});
+            done();
+          });
       });
       
     });

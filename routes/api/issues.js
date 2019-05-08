@@ -15,7 +15,9 @@ router.post('/', (req, res) => {
     status_text: req.body.status_text
   });
 
-  newIssue.save().then(issue => res.json(issue));
+  newIssue.save()
+    .then(issue => res.json(issue))
+    .catch(error => res.json({'error': 'Missing required fields'}));
 });
 
 module.exports = router;
