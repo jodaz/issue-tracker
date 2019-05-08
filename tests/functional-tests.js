@@ -113,17 +113,18 @@ suite('Functional Tests', () => {
         let obj = {
           _id: '5cd33a185f8d1c10fcc01017',
           'title': 'New title 2',
-          'open': false 
+          'open': false,
+          'text': 'Lorem ipsum'
         };
 
         chai.request(server)
           .put('/api/issues/test')
           .send(obj)
-          .set(obj)
           .end((err, res) => {
             assert.equal(res.status, 200);
             assert.equal(res.body.title, obj.title);
             assert.equal(res.body.open, obj.open);
+            assert.equal(res.body.text, obj.text);
             done();
           }); 
       });
