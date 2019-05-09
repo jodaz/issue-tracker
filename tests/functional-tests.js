@@ -147,7 +147,7 @@ suite('Functional Tests', () => {
 
       test('Project not found', (done) => {
         chai.request(server)
-          .get('/api/issues/test')
+          .get('/api/issues/invalid')
           .end((err, res) => {
             assert.equal(res.status, 404);
             assert.deepEqual(res.body, {error: 'project not found'});
@@ -163,7 +163,7 @@ suite('Functional Tests', () => {
           .query(query)
           .end((err, res) => {
             assert.equal(res.status, 404);
-            assert.deepEqual(res.body, {issuesnotfound: true});
+            assert.deepEqual(res.body, {issuesnotfound: 'no issues found'});
             done();
           });
       });

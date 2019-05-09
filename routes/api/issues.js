@@ -12,11 +12,22 @@ router.get('/:project_name', (req, res) => {
   const projectName = req.params.project_name;
   const query = req.query;
 
-  Project.find({name: projectName}).then(projectIssues => {
-      Issue.find(query)
-        .then(issue => res.json(issue))
+  Project.find({name: projectName}).then(projects => {
+      if (!projects.length) {
+        return res
+          .status(404)
+          .json({error: 'project not found'});
+      }
+
+      Issue.find(query).then(issues => {
+        if (!issues.length) {
+          return res
+            .status(404)
+            .json({issuesnotfound: 'no issues found'});
+        }
+        res.json(issues)
+      })
     })
-    .catch(err => console.log(`${err}`));
 });
 
 // @route   POST '/api/issues/:project_name'
