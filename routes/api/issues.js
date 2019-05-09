@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 // Issue model
 const Issue = require('../../models/Issue');
 
-// @route   POST '/api/issues/:project_name'
-// @desc    Creates new issue
+//  @route   POST /api/issues/:project_name
+//  @desc    Creates new issue
 router.post('/', (req, res) => {
 
   const newIssue = new Issue({
@@ -22,6 +22,8 @@ router.post('/', (req, res) => {
     .catch(error => res.json({'error': 'Missing required fields'}));
 });
 
+//  @route   PUT /api/issues/:project_name
+//  @desc    Updates issue
 router.put('/', (req, res) => {
 
   if (Object.keys(req.body).length == 0) {
@@ -47,6 +49,22 @@ router.put('/', (req, res) => {
   .catch(err => {
     console.log(`${err}`); 
     res.status(400).json({'error': `could not update ${req.body._id}`});
+  });
+});
+
+//  @route   DELETE api/issues/:project_name
+//  @desc    Delete issue  
+router.delete('/', (req, res) => {
+
+  if (!req.body._id) {
+    res.status(400).json({error: '_id error'});
+    return;
+  }
+
+  Issue.findOneAndDelete({_id: req.body._id}).then(() => {
+    res.json({success: `deleted ${req.body._id}`});
+  }).catch((err) => {
+    res.status(404).json({failed: `could not delete ${req.body._id}`});
   });
 });
 
