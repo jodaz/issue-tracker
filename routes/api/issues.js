@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 // Issue model
 const Issue = require('../../models/Issue');
 
+// @route   POST '/api/issues/:project_name'
+// @desc    Creates new issue
 router.post('/', (req, res) => {
 
   const newIssue = new Issue({
