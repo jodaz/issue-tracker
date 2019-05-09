@@ -25,7 +25,7 @@ mongoose
   .catch((error) => { console.log(error) });
 
 // Routing
-app.use('/', issues);
+app.use('/api/issues/', issues);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

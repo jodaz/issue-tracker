@@ -2,14 +2,40 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-// Issue model
+// Import models
 const Issue = require('../../models/Issue');
-// Project model
 const Project = require('../../models/Project');
 
-// @route   POST '/api/issues/:project_name'
-// @desc    Creates new issue
-router.post('/api/issues/:project_name', (req, res) => {
+//  @route   GET /api/project/:project_name
+//  @desc    Return all issues for a project
+router.get('/:project_name', (req, res) => {
+  const projectName = req.params.project_name;
+  const query = req.query;
+
+  Project.find({name: projectName}).then(projects => {
+      // No projects with name
+      if (!projects.length) {
+        return res
+          .status(404)
+          .json({error: 'project not found'});
+      }
+
+      Issue.find(query).then(issues => {
+        // No issues found
+        if (!issues.length) {
+          return res
+            .status(404)
+            .json({issuesnotfound: 'no issues found'});
+        }
+        // else
+        res.json(issues);
+      });
+    });
+});
+
+//  @route   POST /api/issues/:project_name
+//  @desc    Creates new issue
+router.post('/:project_name', (req, res) => {
   const projectName = req.params.project_name;
 
   const newIssue = new Issue({
@@ -28,12 +54,12 @@ router.post('/api/issues/:project_name', (req, res) => {
         issue: issue._id
       }).save().catch(error => res.json({error: `${error}`}))
     })
-    .catch(error => res.json({'error': 'Missing required fields'}));
+    .catch(err => res.json({'error': 'Missing required fields'}));
 });
 
 //  @route   PUT /api/issues/:project_name
 //  @desc    Updates issue
-router.put('/', (req, res) => {
+router.put('/:project_name', (req, res) => {
 
   if (Object.keys(req.body).length == 0) {
     res.status(400).json({'error': 'no updated field sent'});
@@ -56,14 +82,13 @@ router.put('/', (req, res) => {
   .then(newIssue => 
     res.json({'sucess': newIssue}))
   .catch(err => {
-    console.log(`${err}`); 
     res.status(400).json({'error': `could not update ${req.body._id}`});
   });
 });
 
 //  @route   DELETE api/issues/:project_name
 //  @desc    Delete issue  
-router.delete('/', (req, res) => {
+router.delete('/:project_name', (req, res) => {
 
   if (!req.body._id) {
     res.status(400).json({error: '_id error'});
