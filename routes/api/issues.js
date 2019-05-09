@@ -61,9 +61,10 @@ router.post('/:project_name', (req, res) => {
 //  @desc    Updates issue
 router.put('/:project_name', (req, res) => {
 
-  if (Object.keys(req.body).length == 0) {
-    res.status(400).json({'error': 'no updated field sent'});
-    return;
+  if (!Object.keys(req.body).length) {
+    return res
+      .status(400)
+      .json({'error': 'no updated field sent'});
   }
 
   let issueFields = {};
@@ -91,8 +92,7 @@ router.put('/:project_name', (req, res) => {
 router.delete('/:project_name', (req, res) => {
 
   if (!req.body._id) {
-    res.status(400).json({error: '_id error'});
-    return;
+    return res.status(400).json({error: '_id error'});
   }
 
   Issue.findOneAndDelete({_id: req.body._id}).then(() => {

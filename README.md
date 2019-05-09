@@ -1,5 +1,8 @@
 # Issue Tracker
 
+## TODO:
+- [ ] Update date on `updated_on` field of issue model.
+
 ## Getting started
 
 ### Prerequisites
