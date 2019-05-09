@@ -1,7 +1,8 @@
 # Issue Tracker
 
 ## TODO:
-- [ ] Update date on `updated_on` field of issue model.
+- [] Update date on `updated_on` field of issue model.
+- [] Improve tests creating new instances of issues.
 
 ## Getting started
 
