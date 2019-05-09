@@ -20,4 +20,20 @@ router.post('/', (req, res) => {
     .catch(error => res.json({'error': 'Missing required fields'}));
 });
 
+// @Router  DELETE api/issues/:project_name
+// @desc    Delete issue  
+router.delete('/', (req, res) => {
+
+  if (!req.body._id) {
+    res.status(400).json({error: '_id error'})
+  }
+
+  // Issues.findOneAndRemove({_id: req.body._id}).then(() => {
+  //   res.json({sucess: `deleted ${req.body._id}`});
+  // }).catch((err) => {
+  //   console.log(`${err}`);
+  //   res.status(404).json({failed: `could not delete ${req.body._id}`});
+  // })
+})
+
 module.exports = router;

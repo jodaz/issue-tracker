@@ -148,6 +148,7 @@ suite('Functional Tests', () => {
           .end((req, res) => {
             assert.equal(res.status, 200);
             assert.deepEqual(res.body, {success: `deleted ${obj._id}`});
+            done();
           })
       });
 
