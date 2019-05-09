@@ -21,9 +21,8 @@ router.post('/', (req, res) => {
 });
 
 router.put('/', (req, res) => {
-
-  if (Object.keys(req.body).length == 0) {
-    res.status(400).json({'error': 'no updated field sent'});
+  if (!req.body._id) {
+    res.status(400).json({error: 'no updated field sent'});
     return;
   }
 
@@ -41,10 +40,9 @@ router.put('/', (req, res) => {
     { $set: issueFields },
     { new: true })
   .then(newIssue => 
-    res.json({'sucess': newIssue}))
+    res.json({sucess: newIssue}))
   .catch(err => {
-    console.log(`${err}`); 
-    res.status(400).json({'error': `could not update ${req.body._id}`});
+    res.status(400).json({error: `could not update ${req.body._id}`});
   });
 });
 
