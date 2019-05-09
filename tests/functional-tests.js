@@ -124,16 +124,48 @@ suite('Functional Tests', () => {
       
     // });
     
-    // suite('DELETE /api/issues/{project} => text', () => {
+    suite('DELETE /api/issues/{project} => text', () => {
       
-    //   test('No _id', (done) => {
-        
-    //   });
+      test('No _id', (done) => {
+        chai.request(server)
+          .delete('/api/issues/test')
+          .send({})
+          .end((req, res) => {
+            assert.equal(res.status, 400);
+            assert.deepEqual(res.body, {error: '_id error'});
+            done();
+          });
+      });
       
-    //   test('Valid _id', (done) => {
-        
-    //   });
+      test('Valid _id', (done) => {
+        let obj = {
+          _id: '5cd2f573a19fad1060d76115'
+        };
+
+        chai.request(server)
+          .delete('/api/issues/test')
+          .send(obj)
+          .end((req, res) => {
+            assert.equal(res.status, 200);
+            assert.deepEqual(res.body, {success: `deleted ${obj._id}`});
+          })
+      });
+
+      test('Invalid _id', (done) => {
+        let obj = {
+          _id: '189148418uajd'
+        };
+
+        chai.request(server)
+          .delete('/api/issues/test')
+          .send(obj)
+          .end((req, res) => {
+            assert.equal(res.status, 404);
+            assert.deepEqual(res.body, {failed: `could not delete ${obj._id}`});
+            done();
+          });
+      });
       
-    // });
+    });
 
 });
