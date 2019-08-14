@@ -2,11 +2,15 @@ const mongoose  = require('mongoose');
 const Schema    = mongoose.Schema;
 
 const IssueSchema = new Schema({
-  title: {
+  project: {
+    type: Schema.Types.ObjectId,
+    ref: 'projects'
+  },
+  issue_title: {
     type: String,
     required: true
   },
-  text: {
+  issue_text: {
     type: String,
     required: true
   },
@@ -16,9 +20,11 @@ const IssueSchema = new Schema({
   },
   assigned_to: {
     type: String,
+    default: ''
   },
   status_text: {
-    type: String
+    type: String,
+    default: ''
   },
   open: {
     type: Boolean,
@@ -34,4 +40,4 @@ const IssueSchema = new Schema({
   }
 });
 
-module.exports = Issue = mongoose.model('Issue', IssueSchema);
+module.exports = Issue = mongoose.model('issues', IssueSchema);

@@ -2,10 +2,12 @@ const express     = require('express');
 const mongoose    = require('mongoose');
 const helmet      = require('helmet');
 const bodyParser  = require('body-parser');
-const path        = 'path';
+const path        = require('path');
 const app         = express();
 const config      = require('./config/keys');
 const testRunner  = require('./test-runner');
+
+const issues = require('./routes/api/issues');
 
 app.use(bodyParser.json({ extended: false }));
 app.use(helmet());
@@ -15,6 +17,8 @@ mongoose
   .connect(config.mongoURI, { useNewUrlParser: true })
   .then(() => { console.log(`MongoDB connected to ${config.mongoURI}`) })
   .catch((error) => { console.log(error) });
+
+app.use('/api/issues', issues);
 
 if (config.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
