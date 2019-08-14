@@ -18,14 +18,14 @@ suite('Functional Tests', () => {
           .end((err, res) => {
             assert.equal(res.status, 200);
             assert.exists(res.body._id);
-            assert.equal(res.issue_title, completeIssue.issue_title);
-            assert.equal(res.issue_text, completeIssue.issue_text);
-            assert.equal(res.created_by, completeIssue.created_by);
-            assert.equal(res.assigned_to, completeIssue.assigned_to);
-            assert.equal(res.status_text, completeIssue.status_text);
-            assert.exists(res.created_on);
-            assert.exists(res.updated_on);
-            assert.equal(res.open, true);
+            assert.equal(res.body.issue_title, completeIssue.issue_title);
+            assert.equal(res.body.issue_text, completeIssue.issue_text);
+            assert.equal(res.body.created_by, completeIssue.created_by);
+            assert.equal(res.body.assigned_to, completeIssue.assigned_to);
+            assert.equal(res.body.status_text, completeIssue.status_text);
+            assert.exists(res.body.created_on);
+            assert.exists(res.body.updated_on);
+            assert.equal(res.body.open, true);
             done();
           });
       });
