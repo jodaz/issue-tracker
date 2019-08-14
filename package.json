@@ -1,0 +1,36 @@
+{
+  "name": "issue-tracker",
+  "version": "1.0.0",
+  "description": "Issue tracker MERN app, project made for freeCodeCamp",
+  "main": "app.js",
+  "scripts": {
+    "client": "npm start --prefix client",
+    "server": "nodemon app.js --ignore client/ --ignore test/",
+    "start": "node app.js",
+    "test": "mocha --timeout 2500 --exit",
+    "dev": "concurrently \"npm run client\" \"npm run server\""
+  },
+  "author": "Jesús Ordosgoitty",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesuodz/issue-tracker.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jesuodz/issue-tracker/issues"
+  },
+  "homepage": "https://github.com/jesuodz/issue-tracker#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "helmet": "^3.16.0",
+    "mongoose": "^5.4.20"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "concurrently": "^4.1.0",
+    "mocha": "^6.0.2"
+  }
+}
