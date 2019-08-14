@@ -1,3 +1,4 @@
+'use strict';
 const chaiHttp  = require('chai-http');
 const chai      = require('chai');
 const assert    = chai.assert;
@@ -56,24 +57,49 @@ suite('Functional Tests', () => {
       });
     });
     
-    // suite('PUT /api/issues/{project} => text', () => {
-      
-    //   test('No body', done => {
-        
-    //   }).end((req, res) => {
-    //     done();
-    //   })
-    //   test('One field to update', done => {
-        
-    //   }).end((req, res) => {
-    //     done();
-    //   })
-    //   test('Multiple fields to update', done => {
-        
-    //   }).end((req, res) => {
-    //     done();
-    //   })
-    // });
+    suite('PUT /api/issues/{project} => text', () => {
+      let issue = {};
+      suiteSetup( async () => {
+        issue = await chai.request(app)
+          .post('/api/issues/test')
+          .send(completeIssue)
+          .then(res => res.body);
+      });
+
+      test('No body', done => {
+        chai.request(app)
+          .put('/api/issues/test')
+          .send({ id: issue._id })
+          .end((req, res) => {
+            assert.equal(res.status, 400);
+            assert.equal(res.body.nobody, 'no updated field sent');
+            done();
+          });
+      });
+      test('One field to update', done => {
+        chai.request(app)
+          .put('/api/issues/test')
+          .send({ id: issue._id, created_by: 'One field to update'})
+          .end((req, res) => {
+            assert.equal(res.status, 200);
+            assert.notEqual(issue.created_by, res.body.created_by);
+            assert.notEqual(issue.updated_on, res.body.updated_on);
+            done();
+          });
+      });
+      // U N D O N E
+      // test('Multiple fields to update', done => {
+      //   chai.request(app)
+      //     .put('/api/issues/test')
+      //     .send({ id: issue._id, ...multipleUpdates })
+      //     .end((req, res) => {
+      //       assert.equal(res.status, 200);
+      //       assert.notDeepEqual(res.body, issue);
+      //       // assert.deepEqual(res.body, issue.issue_text);
+      //       done();
+      //     })
+      // });
+    });
     
     // suite('GET /api/issues/{project} => Array of objects with issue data', () => {
       

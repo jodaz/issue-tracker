@@ -1,5 +1,4 @@
-const add = require('./addIssue');
+const add   = require('./addIssue');
+const edit  = require('./editIssue');
 
-module.exports = {
-  add
-}
+module.exports = { add, edit };

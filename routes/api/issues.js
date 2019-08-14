@@ -1,6 +1,7 @@
 const router = require('express').Router();
-const { add } = require('../../controllers/issues');
+const { add, edit } = require('../../controllers/issues');
 
 router.post('/:project', add);
+router.put('/:project', edit)
 
 module.exports = router;
