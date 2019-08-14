@@ -1,7 +1,12 @@
-const Issue   = require('../../models/Issue');
-const Project = require('../../models/Project');
+const Issue         = require('../../models/Issue');
+const Project       = require('../../models/Project');
+const validateIssue = require('../../validation/fields');
 
 module.exports = (req, res) => {
+  const { errors, isValid } = validateIssue(req.body);
+
+  if (!isValid) return res.status(400).json(errors);
+
   const issueData = {
     issue_title: req.body.issue_title,
     issue_text: req.body.issue_text,

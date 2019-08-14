@@ -3,7 +3,7 @@ const chai      = require('chai');
 const assert    = chai.assert;
 const app       = require('../app');
 
-const { completeIssue } = require('./samples');
+const { completeIssue, requiredFields, missingFields } = require('./samples');
 
 chai.use(chaiHttp);
 
@@ -30,16 +30,30 @@ suite('Functional Tests', () => {
           });
       });
       
-      // test('Required fields filled in', done => {
-        
-      // }).end((req, res) => {
-
-      // })
-      // test('Missing required fields', done => {
-        
-      // }).end((req, res) => {
-
-      // })
+      test('Required fields filled in', done => {
+        chai.request(app)
+          .post('/api/issues/test_project')
+          .send(requiredFields)
+          .end((req, res) => {
+            assert.equal(res.status, 200);
+            assert.equal(res.body.issue_title, requiredFields.issue_title);
+            assert.equal(res.body.assigned_to, '');
+            assert.equal(res.body.status_text, '');
+            done();
+          });
+      });
+      test('Missing required fields', done => {
+        chai.request(app)
+          .post('/api/issues/test')
+          .send(missingFields)
+          .end((req, res) => {
+            assert.equal(res.status, 400);
+            assert.equal(res.body.issue_title, 'Missing issue title');
+            assert.equal(res.body.issue_text, 'Missing issue description');
+            assert.equal(res.body.created_by, 'Missing issue author');
+            done();
+          });
+      });
     });
     
     // suite('PUT /api/issues/{project} => text', () => {
