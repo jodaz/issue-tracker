@@ -5,7 +5,7 @@ let mongoURI    = '';
 
 if (NODE_ENV === 'production') {
   try {
-    mongoURI = require('./keys-produc.js');
+    mongoURI = require('./keys-prod.js');
   } catch(err) {
     console.log(`${err}`);
     process.exit(1);

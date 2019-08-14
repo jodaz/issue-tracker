@@ -7,6 +7,7 @@ const app         = express();
 const config      = require('./config/keys');
 const testRunner  = require('./test-runner');
 
+app.use(bodyParser.json({ extended: false }));
 app.use(helmet());
 
 // Connect to database
