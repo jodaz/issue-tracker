@@ -1,4 +1,4 @@
-const add   = require('./addIssue');
-const edit  = require('./editIssue');
+const add     = require('./add');
+const update  = require('./update');
 
-module.exports = { add, edit };
+module.exports = { add, update };
