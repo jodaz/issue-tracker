@@ -72,7 +72,7 @@ suite('Functional Tests', () => {
           .send({ id: issue._id })
           .end((req, res) => {
             assert.equal(res.status, 400);
-            assert.equal(res.body.nobody, 'no updated field sent');
+            assert.equal(res.body.nobody, 'No updated field sent');
             done();
           });
       });
@@ -81,6 +81,7 @@ suite('Functional Tests', () => {
           .put('/api/issues/test')
           .send({ id: issue._id, created_by: 'One field to update'})
           .end((req, res) => {
+            console.log(res.body);
             assert.equal(res.status, 200);
             assert.notEqual(issue.created_by, res.body.created_by);
             assert.notEqual(issue.updated_on, res.body.updated_on);

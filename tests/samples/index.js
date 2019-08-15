@@ -11,7 +11,10 @@ const
     issue_text: 'text',
     created_by: 'Functional Test - Required fields filled in'
   },
-  missingFields = {};
+  missingFields = {
+    assigned_to: 'Chai and Mocha',
+    status_text: 'In QA'
+  };
 
 module.exports = {
   completeIssue,
