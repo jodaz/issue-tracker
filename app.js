@@ -14,7 +14,7 @@ app.use(helmet());
 
 // Connect to database
 mongoose
-  .connect(config.mongoURI, { useNewUrlParser: true })
+  .connect(config.mongoURI, { useNewUrlParser: true, useFindAndModify: false })
   .then(() => { console.log(`MongoDB connected to ${config.mongoURI}`) })
   .catch((error) => { console.log(error) });
 

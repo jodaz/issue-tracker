@@ -6,10 +6,17 @@ const app       = require('../app');
 
 const { completeIssue, requiredFields, missingFields } = require('./samples');
 
+const Project = require('../models/Project');
+const Issue   = require('../models/Issue');
+
 chai.use(chaiHttp);
 
 suite('Functional Tests', () => {
-  
+  suiteSetup( async () => {
+    await Issue.deleteMany({});
+    await Project.deleteMany({});
+  });
+
     suite('POST /api/issues/{project} => object with issue data', () => {
       
       test('Every field filled in', done => {
@@ -81,25 +88,24 @@ suite('Functional Tests', () => {
           .put('/api/issues/test')
           .send({ id: issue._id, created_by: 'One field to update'})
           .end((req, res) => {
-            console.log(res.body);
             assert.equal(res.status, 200);
-            assert.notEqual(issue.created_by, res.body.created_by);
-            assert.notEqual(issue.updated_on, res.body.updated_on);
+            assert.equal(res.body.success, true);
+            assert.equal('One field to update', res.body.issue.created_by);
+            assert.notEqual(issue.created_on, res.body.issue.updated_on);
             done();
           });
       });
-      // U N D O N E
-      // test('Multiple fields to update', done => {
-      //   chai.request(app)
-      //     .put('/api/issues/test')
-      //     .send({ id: issue._id, ...multipleUpdates })
-      //     .end((req, res) => {
-      //       assert.equal(res.status, 200);
-      //       assert.notDeepEqual(res.body, issue);
-      //       // assert.deepEqual(res.body, issue.issue_text);
-      //       done();
-      //     })
-      // });
+      test('Multiple fields to update', done => {
+        chai.request(app)
+          .put('/api/issues/test')
+          .send({ id: issue._id, ...requiredFields })
+          .end((req, res) => {
+            assert.equal(res.status, 200);
+            assert.notDeepEqual(res.body.issue, issue);
+            assert.equal(res.body.issue.issue_title, requiredFields.issue_title);
+            done();
+          });
+      });
     });
     
     // suite('GET /api/issues/{project} => Array of objects with issue data', () => {
