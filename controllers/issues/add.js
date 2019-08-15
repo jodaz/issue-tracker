@@ -16,21 +16,17 @@ module.exports = (req, res) => {
   if (req.body.status_text) issueData.status_text = req.body.status_text;
   if (req.body.assigned_to) issueData.assigned_to = req.body.assigned_to;
 
-  Project.findOne({ project_name : req.params.project}).then(project => {
+  Project.findOne({ project_name : req.params.project }).then(project => {
     if (project) return project._id;
     else {
-      new Project({ project_name : req.params.project })
+      return new Project({ project_name : req.params.project })
         .save()
-        .then(project => project._id)
-        .catch(err => console.log(err));
+        .then(project => project._id);
     }
   }).then(id => {
-    // Save reference
-    issueData.project = id;
-
-    new Issue(issueData)
+    // Saves issue with project reference.
+    new Issue({ project: id, ...issueData })
       .save()
-      .then(issue => res.status(200).json(issue))
-      .catch(err => console.log(err));
+      .then(issue => res.status(200).json(issue));
   }).catch(err => console.log(err));
 };

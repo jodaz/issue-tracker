@@ -34,6 +34,7 @@ suite('Functional Tests', () => {
             assert.exists(res.body.created_on);
             assert.exists(res.body.updated_on);
             assert.equal(res.body.open, true);
+            assert.exists(res.body.project);
             done();
           });
       });
