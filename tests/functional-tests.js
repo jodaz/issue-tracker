@@ -143,18 +143,30 @@ suite('Functional Tests', () => {
     //   })
     // });
     
-    // suite('DELETE /api/issues/{project} => text', () => {
-      
-    //   test('No _id', done => {
+    suite('DELETE /api/issues/{project} => text', () => {
+      let issue = {};
+      suiteSetup( async () => {
+        issue = await chai.request(app)
+          .post('/api/issues/test')
+          .send(completeIssue)
+          .then(res => res.body);
+      });
+
+      // test('No _id', done => {
         
-    //   }).end((req, res) => {
-    //     done();
-    //   })
-    //   test('Valid _id', done => {
-        
-    //   }).end((req, res) => {
-    //     done();
-    //   })
-    // });
+      //   done();
+      // });
+      test('Valid _id', done => {
+        chai.request(app)
+          .delete('/api/issues/test')
+          .send({ id: issue._id })
+          .end((req, res) => {
+            assert.equal(res.status, 200);
+            assert.exists(res.body.success)
+            assert.equal(res.body.success, `Deleted ${issue._id}`);
+            done();
+          });
+      });
+    });
 
 });
