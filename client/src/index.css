@@ -10,14 +10,20 @@ body {
 
 .App {
   min-height: 100vh;
+  flex-direction: column;
 }
 .App,
 .App-body {
   display: flex;
   flex: 1 1 auto;
-  flex-direction: column;
 }
-
+.holy-grail-content {
+  flex: 1 1 auto;
+  padding: 20px;
+}
+.App-body {
+  flex-direction: row;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
