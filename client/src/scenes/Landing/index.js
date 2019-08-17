@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { showAll } from '../../services/api/actions';
+import { showAll } from '../../services/api/issues';
 
 class Landing extends Component {
   componentDidMount() {
