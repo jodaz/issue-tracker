@@ -190,5 +190,17 @@ suite('Functional Tests', () => {
           });
       });
     });
-
+  
+  suite('GET /api/issues/issues/all', () => {
+    test('All issues', done => {
+      chai.request(app)
+        .get('/api/issues/issues/all')
+        .end((req, res) => {
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.equal(res.body.length, 3);
+          done();
+        });
+    });
+  });
 });
