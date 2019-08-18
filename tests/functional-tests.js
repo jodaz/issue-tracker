@@ -185,7 +185,7 @@ suite('Functional Tests', () => {
           .end((req, res) => {
             assert.equal(res.status, 200);
             assert.exists(res.body.success)
-            assert.equal(res.body.success, `Deleted ${issue._id}`);
+            assert.equal(res.body.success, `${issue._id}`);
             done();
           });
       });
