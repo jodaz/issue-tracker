@@ -4,7 +4,9 @@ import { showAll } from '../../services/api/issues';
 
 class Landing extends Component {
   componentDidMount() {
-    this.props.showAll('/issues/all');
+    const project = this.props.match.params.project;
+
+    this.props.showAll(project);
   }
 
   render() {
