@@ -25,7 +25,7 @@ class Landing extends Component {
 }
 
 const mapStateToProps = state => ({
-  issues: state.issues
+  issues: state.issue.issues
 });
 
 export default connect(mapStateToProps, { showAll })(Landing);

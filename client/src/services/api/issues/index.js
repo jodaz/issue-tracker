@@ -1,4 +1,4 @@
-import issuesReducer from './reducer';
+import issueReducer from './reducer';
 import { showAll } from './actions';
 
-export { issuesReducer, showAll };
+export { issueReducer, showAll };

@@ -1,12 +1,17 @@
 import { SHOW_ALL } from './types';
 
-export default (state = [], action) => {
+const initialState = {
+  issue: {},
+  issues: []
+}
+
+export default (state = initialState, action) => {
   switch(action.type) {
     case SHOW_ALL:
-      return [
+      return {
         ...state,
-        ...action.payload
-      ]
+        issues: action.payload
+      }
     default:
       return state;
   }
