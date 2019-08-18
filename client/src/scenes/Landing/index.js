@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { showAll } from '../../services/api/issues';
 
+import { Card, Button, CardTitle, CardText, CardColumns,
+  CardSubtitle, CardBody, CardHeader, CardFooter } from 'reactstrap';
+
 class Landing extends Component {
   componentDidMount() {
     this.props.showAll('/issues/all');
@@ -10,15 +13,31 @@ class Landing extends Component {
   render() {
     return (
       <div>
-        { 
-          this.props.issues.map((issue, index) => (
-            <div key={index}>
-              <p>{issue.issue_title}</p>
-              <p>{issue.issue_text}</p>
-              <p>{issue.created_by}</p>
-            </div>
-          ))
-        }
+        <h2>Latest issues</h2>
+        <CardColumns>
+          { 
+            this.props.issues.map((issue, index) => (              
+              <Card key={index}>
+                <CardHeader>{issue.issue_title}</CardHeader>
+                <CardBody>
+                  <CardTitle>
+                    Project: {issue.project.project_name}
+                  </CardTitle>
+                  <CardSubtitle>
+                    Status: {(issue.status_text) ? issue.status_text : 'Undefined'}
+                  </CardSubtitle>
+                  <CardText>
+                    { issue.issue_text }
+                  </CardText>
+                </CardBody>
+                <CardFooter>
+                  <Button>Test Button</Button>
+                </CardFooter>
+              </Card>
+            ))
+          }
+        </CardColumns>
+        <h2>All projects</h2>
       </div>
     )
   }
