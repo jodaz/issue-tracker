@@ -1,4 +1,4 @@
-import { SHOW_ALL } from './types';
+import { SHOW_ALL, DELETE_ISSUE } from './types';
 import axios from 'axios';
 
 export const showAll = (search) => dispatch => {
@@ -16,4 +16,21 @@ export const showAll = (search) => dispatch => {
         payload: null
       })
     );
+};
+
+export const deleteIssue = (project, issueID) => dispatch => {
+  axios({
+    method: 'DELETE',
+    url: `api/issues/${project}`,
+    data: {
+      id: issueID
+    }
+  })
+  .then(res => 
+    dispatch({
+      type: DELETE_ISSUE,
+      payload: res.data.success
+    })
+  )
+  .catch(err => console.log(err));
 };

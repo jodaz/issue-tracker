@@ -1,4 +1,4 @@
-import { SHOW_ALL } from './types';
+import { SHOW_ALL, DELETE_ISSUE } from './types';
 
 const initialState = {
   issue: {},
@@ -11,6 +11,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         issues: action.payload
+      }
+    case DELETE_ISSUE:
+      return {
+        ...state,
+        issues: state.issues.filter(issue => issue._id !== action.payload)
       }
     default:
       return state;

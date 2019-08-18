@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { showAll } from '../../services/api/issues';
+import { showAll, deleteIssue } from '../../services/api/issues';
 
 import { Card, Button, CardTitle, CardText, CardColumns,
   CardSubtitle, CardBody, CardHeader, CardFooter } from 'reactstrap';
@@ -10,13 +10,17 @@ class Landing extends Component {
     this.props.showAll('/issues/all');
   }
 
+  onDeleteClick = (project, id) => {
+    this.props.deleteIssue(project, id);
+  }
+
   render() {
     return (
       <div>
         <h2>Latest issues</h2>
         <CardColumns>
           { 
-            this.props.issues.map((issue, index) => (              
+            this.props.issues.map((issue, index) => (
               <Card key={index}>
                 <CardHeader>{issue.issue_title}</CardHeader>
                 <CardBody>
@@ -31,7 +35,13 @@ class Landing extends Component {
                   </CardText>
                 </CardBody>
                 <CardFooter>
-                  <Button>Test Button</Button>
+                  <Button color="info">Edit</Button>
+                  <Button
+                    color="danger"
+                    onClick={this.onDeleteClick.bind(this, issue.project.project_name, issue._id)}
+                  >
+                    Delete
+                  </Button>
                 </CardFooter>
               </Card>
             ))
@@ -47,4 +57,4 @@ const mapStateToProps = state => ({
   issues: state.issue.issues
 });
 
-export default connect(mapStateToProps, { showAll })(Landing);
+export default connect(mapStateToProps, { showAll, deleteIssue })(Landing);
