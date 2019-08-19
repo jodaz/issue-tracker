@@ -22,22 +22,33 @@ class Landing extends Component {
           { 
             this.props.issues.map((issue, index) => (
               <Card key={index}>
-                <CardHeader>{issue.issue_title}</CardHeader>
+                <CardHeader>
+                  <b>{issue.issue_title}</b>
+                </CardHeader>
                 <CardBody>
                   <CardTitle>
-                    Project: {issue.project.project_name}
+                    Project: {' '}
+                    {issue.project.project_name}
                   </CardTitle>
                   <CardSubtitle>
-                    Status: {(issue.status_text) ? issue.status_text : 'Undefined'}
+                    Status: {' '}
+                    {(issue.status_text) ? issue.status_text : 'Undefined'}
                   </CardSubtitle>
                   <CardText>
+                    Description: {' '}
                     { issue.issue_text }
                   </CardText>
                 </CardBody>
                 <CardFooter>
-                  <Button color="info">Edit</Button>
+                  <Button
+                    color="success"
+                    size="sm"
+                  >
+                    Edit
+                  </Button>
                   <Button
                     color="danger"
+                    size="sm"
                     onClick={this.onDeleteClick.bind(this, issue.project.project_name, issue._id)}
                   >
                     Delete

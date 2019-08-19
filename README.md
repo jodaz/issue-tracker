@@ -35,7 +35,7 @@ npm run client
 By default, server runs on `http://localhost:4000` and client runs on `http://localhost:3000`
 
 ## Author
-Jesús Ordosgoitty [jesuodz](https://jesuodz.github.io) | [Twitter](https://twitter.com/jesuodz)
+Jesús Ordosgoitty ( [jesuodz](https://jesuodz.github.io) | [Twitter](https://twitter.com/jesuodz) )
 
 ## Acknowledgments
 

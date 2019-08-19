@@ -1,0 +1,8 @@
+.footer {
+  font-size: 0.9em;
+}
+.footer-link {
+  text-transform: lowercase;
+  padding-left: 3px;
+  padding-right: 3px;
+}
