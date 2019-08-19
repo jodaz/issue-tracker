@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { showAll, deleteIssue } from '../../services/api/issues';
-
+import AddIssue from '../components/AddIssue';
 import { Card, Button, CardTitle, CardText, CardColumns,
   CardSubtitle, CardBody, CardHeader, CardFooter } from 'reactstrap';
 
@@ -18,6 +18,7 @@ class Landing extends Component {
     return (
       <div>
         <h2>Latest issues</h2>
+        <AddIssue />
         <CardColumns>
           { 
             this.props.issues.map((issue, index) => (
