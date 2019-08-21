@@ -174,10 +174,15 @@ suite('Functional Tests', () => {
           .then(res => res.body);
       });
 
-      // test('No _id', done => {
-        
-      //   done();
-      // });
+      test('No _id', done => {
+        chai.request(app)
+          .delete('/api/issues/test')
+          .end((req, res) => {
+            assert.equal(res.status, 400);
+            assert.exists(res.body.iderr, 'No id sent');
+            done();
+          });
+      });
       test('Valid _id', done => {
         chai.request(app)
           .delete('/api/issues/test')
@@ -186,6 +191,18 @@ suite('Functional Tests', () => {
             assert.equal(res.status, 200);
             assert.exists(res.body.success)
             assert.equal(res.body.success, `${issue._id}`);
+            done();
+          });
+      });
+      test('Invalid _id', done => {
+        let wrongID = issue._id.slice(1) + '_';
+
+        chai.request(app)
+          .delete('/api/issues/test')
+          .send({ id: wrongID })
+          .end((req, res) => {
+            assert.equal(res.status, 400);
+            assert.exists(res.body.notfound);
             done();
           });
       });
