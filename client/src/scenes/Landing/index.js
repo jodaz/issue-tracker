@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { showAll, deleteIssue } from '../../services/api/issues';
 
 import { Card, Button, CardTitle, CardText, CardColumns,
-  CardSubtitle, CardBody, CardHeader, CardFooter } from 'reactstrap';
+  CardSubtitle, CardBody } from 'reactstrap';
 
 class Landing extends Component {
   componentDidMount() {
@@ -22,24 +22,20 @@ class Landing extends Component {
           { 
             this.props.issues.map((issue, index) => (
               <Card key={index}>
-                <CardHeader>
-                  <b>{issue.issue_title}</b>
-                </CardHeader>
                 <CardBody>
                   <CardTitle>
-                    Project: {' '}
-                    {issue.project.project_name}
+                    <b>{issue.issue_title}</b>
                   </CardTitle>
                   <CardSubtitle>
                     Status: {' '}
                     {(issue.status_text) ? issue.status_text : 'Undefined'}
+                    Project: {' '}
+                    {issue.project.project_name}
                   </CardSubtitle>
                   <CardText>
                     Description: {' '}
                     { issue.issue_text }
                   </CardText>
-                </CardBody>
-                <CardFooter>
                   <Button
                     color="success"
                     size="sm"
@@ -53,7 +49,7 @@ class Landing extends Component {
                   >
                     Delete
                   </Button>
-                </CardFooter>
+                </CardBody>
               </Card>
             ))
           }
