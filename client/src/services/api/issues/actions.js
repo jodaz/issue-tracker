@@ -1,4 +1,4 @@
-import { SHOW_ALL, DELETE_ISSUE } from './types';
+import { SHOW_ALL, DELETE_ISSUE, ADD_ISSUE } from './types';
 import axios from 'axios';
 
 export const showAll = (search) => dispatch => {
@@ -33,4 +33,18 @@ export const deleteIssue = (project, issueID) => dispatch => {
     })
   )
   .catch(err => console.log(err));
+};
+
+export const addIssue = (project, issue) => dispatch => {
+  console.log(project);
+  axios
+    .post(`api/issues/${project}`, issue)
+    .then( res => {
+      dispatch({
+        type: ADD_ISSUE,
+        payload: res.data
+      })
+      dispatch(showAll('/issues/all'));
+    })
+    .catch(err => console.log(err.response.data));
 };

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, 
-  Form, FormGroup, Input } from 'reactstrap';
+import PropTypes from 'prop-types';
+import { Button, Modal, ModalBody, Form, FormGroup, Input } from 'reactstrap';
+import { addIssue } from '../../../services/api/issues';
+import { connect } from 'react-redux';
 
 class AddIssue extends Component {
   constructor(props) {
@@ -16,6 +18,7 @@ class AddIssue extends Component {
     }
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange = event => {
@@ -29,19 +32,13 @@ class AddIssue extends Component {
   }
 
   handleSubmit = () => {
-    const issue = {
-      issue_title: this.state.title,
-      issue_text: this.state.description,
-      created_by: this.state.author,
-      status_text: this.state.status,
-      assigned_to: this.state.assigned_to
-    }
-
-    console.log(issue);
+    const { modal, project, ...issue } = this.state;
+    console.log(this.props.history);
+    this.props.addIssue(project, issue);
+    this.setState({modal: !modal});
   }
 
   render() {
-    console.log(this.state);
     return (
       <div>
         <Button
@@ -51,14 +48,14 @@ class AddIssue extends Component {
         >
           Add issue
         </Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} backdrop={false}>
-          <ModalHeader toggle={this.toggle}>New issue</ModalHeader>
+        <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalBody>
+            <h4>New Issue</h4>
             <Form>
               <FormGroup>
                 <Input
                   type='text'
-                  name='title'
+                  name='issue_title'
                   placeholder='Issue title (required)'
                   bsSize='sm'
                   onChange={this.handleChange}
@@ -67,7 +64,7 @@ class AddIssue extends Component {
               <FormGroup>
                 <Input
                   type='text'
-                  name='description'
+                  name='issue_text'
                   placeholder='Issue description (required)'
                   bsSize='sm'
                   onChange={this.handleChange}
@@ -76,7 +73,7 @@ class AddIssue extends Component {
               <FormGroup>
                 <Input
                   type='text'
-                  name='author'
+                  name='created_by'
                   placeholder='Issue author (required)'
                   bsSize='sm'
                   onChange={this.handleChange}
@@ -85,7 +82,7 @@ class AddIssue extends Component {
               <FormGroup>
                 <Input
                   type='text'
-                  name='project_name'
+                  name='project'
                   placeholder='Project name'
                   bsSize='sm'
                   onChange={this.handleChange}
@@ -103,23 +100,25 @@ class AddIssue extends Component {
               <FormGroup>
                 <Input
                   type='text'
-                  name='status'
+                  name='status_text'
                   placeholder='Status text'
                   bsSize='sm'
                   onChange={this.handleChange}
                 />
               </FormGroup>
             </Form>
-          </ModalBody>
-          <ModalFooter>
             <Button color="primary" onClick={this.handleSubmit} size='sm'>Add</Button>
             {' '}
             <Button color="danger" onClick={this.toggle} size='sm'>Cancel</Button>
-          </ModalFooter>
+          </ModalBody>
         </Modal>
       </div>
     );
   }
 }
 
-export default AddIssue;
+AddIssue.propTypes = {
+  addIssue: PropTypes.func.isRequired
+};
+
+export default connect(null, { addIssue })(AddIssue);
