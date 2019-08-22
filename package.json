@@ -4,6 +4,7 @@
   "description": "Issue tracker MERN app, project made for freeCodeCamp",
   "main": "app.js",
   "scripts": {
+    "client-build": "npm run build --prefix client",
     "client": "npm start --prefix client",
     "server": "nodemon app.js --ignore client/ --ignore test/",
     "start": "node app.js",
