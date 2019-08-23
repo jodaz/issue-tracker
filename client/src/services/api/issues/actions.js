@@ -47,6 +47,9 @@ export const addIssue = (project, issue) => dispatch => {
     })
     .catch(err => dispatch({
       type: GET_ERRORS,
-      payload: err.response.data
+      payload: {
+        errors: err.response.data,
+        issue: { project: project, ...issue }
+      }
     }));
 };

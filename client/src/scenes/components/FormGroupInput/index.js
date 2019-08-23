@@ -9,7 +9,8 @@ const FormGroupInput = ({
   placeholder,
   size,
   onChange,
-  error
+  error,
+  value
 }) => {
   return (
     <FormGroup>
@@ -20,6 +21,7 @@ const FormGroupInput = ({
         bsSize={size}
         onChange={onChange}
         className={classNames({'is-invalid': error})}
+        value={value}
       />
       {
         error && (
@@ -36,7 +38,8 @@ FormGroupInput.propTypes = {
   placeholder: PropTypes.string,
   bsSize: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  error: PropTypes.string
+  error: PropTypes.string,
+  value: PropTypes.string
 };
 
 FormGroupInput.defaultProps = {

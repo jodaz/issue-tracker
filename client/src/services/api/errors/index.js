@@ -1,9 +1,17 @@
 import { GET_ERRORS } from '../types';
 
-export default (state = {}, action) => {
+const initialState = {
+  errors: {},
+  issue: {}
+}
+
+export default (state = initialState, action) => {
   switch(action.type) {
     case GET_ERRORS:
-      return action.payload;
+      return {
+        errors: action.payload.errors,
+        issue: action.payload.issue
+      };
     default: 
       return state;
   }

@@ -18,7 +18,6 @@ export default (state = initialState, action) => {
         issues: state.issues.filter(issue => issue._id !== action.payload)
       }
     case ADD_ISSUE:
-      console.log(action.payload)
       return {
         ...state,
         issue: action.payload

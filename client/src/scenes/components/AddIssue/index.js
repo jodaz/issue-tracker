@@ -2,22 +2,25 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FormGroupInput from '../FormGroupInput';
 import { Button, Modal, ModalBody, Form } from 'reactstrap';
-import isEmpty from '../../../services/validation/isEmpty';
 import { addIssue } from '../../../services/api/issues';
 import { connect } from 'react-redux';
+
+const setIssue = {
+  issue_title: '',
+  issue_text: '',
+  project: '',
+  created_by: '',
+  status_text: '',
+  assigned_to: ''
+}
 
 class AddIssue extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modal: false,
-      issue_title: '',
-      issue_text: '',
-      project: '',
-      created_by: '',
-      status_text: '',
-      assigned_to: '',
-      errors: ''
+      ...setIssue,
+      errors: {}
     };
 
     this.toggle = this.toggle.bind(this);
@@ -31,28 +34,29 @@ class AddIssue extends Component {
     this.setState({[event.target.name]: event.target.value});
   }
 
-  toggle = () => {
-    this.setState({ modal: !this.state.modal });
-  }
+  toggle = () => this.setState({ modal: !this.state.modal, ...setIssue });
 
   handleSubmit = () => {
-    const { modal, project, ...issue } = this.state;
+    const { modal, project, errors, ...issue } = this.state;
 
     this.props.addIssue(project, issue);
+    this.toggle();
+  };
 
-    if (!isEmpty(this.props.errors)) {
-      this.setState({modal: !modal});
-    }
-  }
+  componentWillReceiveProps(newProps) {
+    if (newProps.errors.errors) {
+      const oldIssue = newProps.errors.issue;
 
-  componentWillReceiveProps(nextProps) {
-    if (!isEmpty(nextProps.errors)) {
-      this.setState({ errors: nextProps.errors });
+      this.setState({
+        errors: newProps.errors.errors,
+        modal: true,
+        ...oldIssue
+      });
     }
-  }
+  };
 
   render() {
-    const { errors } = this.state;
+    const { errors, modal, ...issue } = this.state;
 
     return (
       <div>
@@ -63,7 +67,7 @@ class AddIssue extends Component {
         >
           Add issue
         </Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <Modal isOpen={modal} toggle={this.toggle}>
           <ModalBody>
             <h4>New Issue</h4>
             <Form>
@@ -74,6 +78,7 @@ class AddIssue extends Component {
                 size='sm'
                 error={errors.issue_title}
                 onChange={this.handleChange}
+                value={issue.issue_title}
               />
               <FormGroupInput
                 type='text'
@@ -82,6 +87,7 @@ class AddIssue extends Component {
                 size='sm'
                 error={errors.issue_text}
                 onChange={this.handleChange}
+                value={issue.issue_text}
               />
               <FormGroupInput
                 type='text'
@@ -90,14 +96,15 @@ class AddIssue extends Component {
                 size='sm'
                 error={errors.created_by}
                 onChange={this.handleChange}
+                value={issue.created_by}
               />
               <FormGroupInput
                 type='text'
                 name='project'
                 placeholder='Project name'
-                value='Default'
                 size='sm'
                 onChange={this.handleChange}
+                value={issue.project}
               />
               <FormGroupInput
                 type='text'
@@ -105,6 +112,7 @@ class AddIssue extends Component {
                 placeholder='Assigned to'
                 size='sm'
                 onChange={this.handleChange}
+                value={issue.assigned_to}
               />
               <FormGroupInput
                 type='text'
@@ -112,6 +120,7 @@ class AddIssue extends Component {
                 placeholder='Status text'
                 size='sm'
                 onChange={this.handleChange}
+                value={issue.status_text}
               />
             </Form>
             <Button color="primary" onClick={this.handleSubmit} size='sm'>Add</Button>
