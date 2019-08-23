@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal, ModalBody, Form, FormGroup, Input } from 'reactstrap';
+import FormGroupInput from '../FormGroupInput';
+import { Button, Modal, ModalBody, Form } from 'reactstrap';
+import isEmpty from '../../../services/validation/isEmpty';
 import { addIssue } from '../../../services/api/issues';
 import { connect } from 'react-redux';
 
@@ -14,8 +16,10 @@ class AddIssue extends Component {
       project: '',
       created_by: '',
       status_text: '',
-      assigned_to: ''
-    }
+      assigned_to: '',
+      errors: ''
+    };
+
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,12 +37,23 @@ class AddIssue extends Component {
 
   handleSubmit = () => {
     const { modal, project, ...issue } = this.state;
-    console.log(this.props.history);
+
     this.props.addIssue(project, issue);
-    this.setState({modal: !modal});
+
+    if (!isEmpty(this.props.errors)) {
+      this.setState({modal: !modal});
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEmpty(nextProps.errors)) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
   render() {
+    const { errors } = this.state;
+
     return (
       <div>
         <Button
@@ -52,60 +67,52 @@ class AddIssue extends Component {
           <ModalBody>
             <h4>New Issue</h4>
             <Form>
-              <FormGroup>
-                <Input
-                  type='text'
-                  name='issue_title'
-                  placeholder='Issue title (required)'
-                  bsSize='sm'
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Input
-                  type='text'
-                  name='issue_text'
-                  placeholder='Issue description (required)'
-                  bsSize='sm'
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Input
-                  type='text'
-                  name='created_by'
-                  placeholder='Issue author (required)'
-                  bsSize='sm'
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Input
-                  type='text'
-                  name='project'
-                  placeholder='Project name'
-                  bsSize='sm'
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Input
-                  type='text'
-                  name='assigned_to'
-                  placeholder='Assigned to'
-                  bsSize='sm'
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Input
-                  type='text'
-                  name='status_text'
-                  placeholder='Status text'
-                  bsSize='sm'
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
+              <FormGroupInput
+                type='text'
+                name='issue_title'
+                placeholder='Title'
+                size='sm'
+                error={errors.issue_title}
+                onChange={this.handleChange}
+              />
+              <FormGroupInput
+                type='text'
+                name='issue_text'
+                placeholder='Description'
+                size='sm'
+                error={errors.issue_text}
+                onChange={this.handleChange}
+              />
+              <FormGroupInput
+                type='text'
+                name='created_by'
+                placeholder='Author'
+                size='sm'
+                error={errors.created_by}
+                onChange={this.handleChange}
+              />
+              <FormGroupInput
+                type='text'
+                name='project'
+                placeholder='Project name'
+                value='Default'
+                size='sm'
+                onChange={this.handleChange}
+              />
+              <FormGroupInput
+                type='text'
+                name='assigned_to'
+                placeholder='Assigned to'
+                size='sm'
+                onChange={this.handleChange}
+              />
+              <FormGroupInput
+                type='text'
+                name='status_text'
+                placeholder='Status text'
+                size='sm'
+                onChange={this.handleChange}
+              />
             </Form>
             <Button color="primary" onClick={this.handleSubmit} size='sm'>Add</Button>
             {' '}
@@ -121,4 +128,8 @@ AddIssue.propTypes = {
   addIssue: PropTypes.func.isRequired
 };
 
-export default connect(null, { addIssue })(AddIssue);
+const mapStateToProps = state => ({
+  errors: state.errors
+});
+
+export default connect(mapStateToProps, { addIssue })(AddIssue);
