@@ -1,4 +1,4 @@
-import { SHOW_ALL, DELETE_ISSUE, ADD_ISSUE } from './types';
+import { SHOW_ALL, DELETE_ISSUE, ADD_ISSUE } from '../types';
 
 const initialState = {
   issue: {},
