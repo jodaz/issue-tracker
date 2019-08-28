@@ -7,7 +7,7 @@ import errorsReducer from './services/api/errors';
 const rootReducer = combineReducers({
   issue: issueReducer,
   errors: errorsReducer
-})
+});
 
 export default createStore(
   rootReducer,

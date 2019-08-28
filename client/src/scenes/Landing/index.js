@@ -59,7 +59,7 @@ class Landing extends Component {
       </div>
     )
   }
-}
+};
 
 const mapStateToProps = state => ({
   issues: state.issue.issues

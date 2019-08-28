@@ -131,7 +131,7 @@ class AddIssue extends Component {
       </div>
     );
   }
-}
+};
 
 AddIssue.propTypes = {
   addIssue: PropTypes.func.isRequired
