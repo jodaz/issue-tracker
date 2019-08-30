@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FormGroupInput from '../FormGroupInput';
+import isEmpty from '../../../services/validation/isEmpty';
 import { Button, Modal, ModalBody, Form } from 'reactstrap';
 import { addIssue } from '../../../services/api/issues';
 import { connect } from 'react-redux';
@@ -36,7 +37,8 @@ class AddIssue extends Component {
 
   toggle = () => this.setState({ modal: !this.state.modal, ...setIssue });
 
-  handleSubmit = () => {
+  handleSubmit = event => {
+    event.preventDefault();
     const { modal, project, errors, ...issue } = this.state;
 
     this.props.addIssue(project, issue);
@@ -44,11 +46,13 @@ class AddIssue extends Component {
   };
 
   componentWillReceiveProps(newProps) {
-    if (newProps.errors.errors) {
-      const oldIssue = newProps.errors.issue;
+    const errProps = newProps.errors;
+
+    if (!isEmpty(errProps.errors)) {
+      const oldIssue = errProps.issue;
 
       this.setState({
-        errors: newProps.errors.errors,
+        errors: errProps.errors,
         modal: true,
         ...oldIssue
       });

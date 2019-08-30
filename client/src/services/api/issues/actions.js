@@ -1,4 +1,10 @@
-import { SHOW_ALL, DELETE_ISSUE, ADD_ISSUE, GET_ERRORS } from '../types';
+import {
+  SHOW_ALL,
+  DELETE_ISSUE,
+  ADD_ISSUE,
+  GET_ERRORS,
+  CLEAR_ERRORS
+} from '../types';
 import axios from 'axios';
 
 export const showAll = (search) => dispatch => {
@@ -42,7 +48,9 @@ export const addIssue = (project, issue) => dispatch => {
       dispatch({
         type: ADD_ISSUE,
         payload: res.data
-      })
+      });
+      // Clear errors with successful response
+      dispatch(clearErrors());
       dispatch(showAll('/issues/all'));
     })
     .catch(err => dispatch({
@@ -52,4 +60,10 @@ export const addIssue = (project, issue) => dispatch => {
         issue: { project: project, ...issue }
       }
     }));
+};
+
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
+  }
 };
