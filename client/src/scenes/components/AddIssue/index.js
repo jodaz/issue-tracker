@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import FormGroupInput from '../FormGroupInput';
 import { Button, Modal, ModalBody, Form } from 'reactstrap';
 import { addIssue } from '../../../services/api/issues';
+import { setModal } from '../../../services/api/modal';
 import { connect } from 'react-redux';
 
 const setIssue = {
@@ -18,7 +19,6 @@ class AddIssue extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false,
       ...setIssue,
       errors: {}
     };
@@ -34,10 +34,13 @@ class AddIssue extends Component {
     this.setState({[event.target.name]: event.target.value});
   }
 
-  toggle = () => this.setState({ modal: !this.state.modal, ...setIssue });
+  toggle = () => {
+    this.props.setModal();
+    this.setState({ ...setIssue });
+  }
 
   handleSubmit = () => {
-    const { modal, project, errors, ...issue } = this.state;
+    const { project, errors, ...issue } = this.state;
 
     this.props.addIssue(project, issue);
     this.toggle();
@@ -49,14 +52,14 @@ class AddIssue extends Component {
 
       this.setState({
         errors: newProps.errors.errors,
-        modal: true,
         ...oldIssue
       });
     }
   };
 
   render() {
-    const { errors, modal, ...issue } = this.state;
+    const { errors, ...issue } = this.state;
+    const modal = this.props.modal;
 
     return (
       <div>
@@ -134,11 +137,15 @@ class AddIssue extends Component {
 };
 
 AddIssue.propTypes = {
-  addIssue: PropTypes.func.isRequired
+  addIssue: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
+  setModal: PropTypes.func.isRequired,
+  modal: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
-  errors: state.errors
+  errors: state.errors,
+  modal: state.modal
 });
 
-export default connect(mapStateToProps, { addIssue })(AddIssue);
+export default connect(mapStateToProps, { addIssue, setModal })(AddIssue);
