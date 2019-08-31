@@ -34,7 +34,7 @@ class AddIssue extends Component {
     this.setState({[event.target.name]: event.target.value});
   }
 
-  toggle = () => this.setState({ modal: !this.state.modal, ...setIssue });
+  toggle = () => this.setState({ modal: !this.state.modal, ...setIssue, errors: {} });
 
   handleSubmit = () => {
     const { modal, project, errors, ...issue } = this.state;
