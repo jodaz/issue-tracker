@@ -19,6 +19,7 @@ mongoose
   .then(() => { console.log(`MongoDB connected to ${config.mongoURI}`) })
   .catch((error) => { console.log(error) });
 
+// Routing
 app.use('/api/issues', issues);
 
 if (config.NODE_ENV === 'production') {
