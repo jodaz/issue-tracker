@@ -9,7 +9,8 @@ const testRunner  = require('./test-runner');
 
 const issues = require('./routes/api/issues');
 
-app.use(bodyParser.json({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(helmet());
 
 // Connect to database
@@ -23,14 +24,14 @@ app.use('/api/issues', issues);
 if (config.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
   app.get('*', (req, res) => {
-    res.send(path('client', 'build', 'index.html'))
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
 
 app.listen(config.PORT, () => {
   console.log(`Listening on port ${config.PORT}`);
 
-  if (config.NODE_ENV === 'test') {
+  if (config.NODE_ENV === 'test')  {
     console.log('...Running tests...');
     setTimeout(() => {
       try {
