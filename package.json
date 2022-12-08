@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/jesuodz/issue-tracker#readme",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4",
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
     "helmet": "^3.16.0",
     "mongoose": "^5.4.20"
   },
